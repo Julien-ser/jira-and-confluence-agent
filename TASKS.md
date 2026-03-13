@@ -1,0 +1,26 @@
+# jira-and-confluence-agent
+
+**Mission:** Agent that autonmously creates and modifies jira and confluence spaces, in a similar fashion to what a jira admin would be tasked with
+
+## Phase 1: Setup & Planning
+- [ ] Review requirements and design architecture
+- [ ] Set up development environment and dependencies
+- [ ] Create project structure
+
+## Phase 2: Core Implementation  
+- [ ] Implement main features
+- [ ] Integrate APIs and libraries
+- [ ] Build core logic
+
+## Phase 3: Testing
+- [ ] Write and run tests
+- [ ] Integration testing
+- [ ] Bug fixes
+
+## Phase 4: Documentation & Deployment
+- [ ] Write documentation
+- [ ] Prepare deployment
+- [ ] Deploy and validate
+
+**Created:** Fri Mar 13 08:46:38 AM EDT 2026
+**Mission:** Agent that autonmously creates and modifies jira and confluence spaces, in a similar fashion to what a jira admin would be tasked with
