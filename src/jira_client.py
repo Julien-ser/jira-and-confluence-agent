@@ -1,7 +1,7 @@
 """Jira REST API client."""
 
 import logging
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from .utils import setup_logging
 
 logger = logging.getLogger(__name__)
@@ -74,11 +74,11 @@ class JiraClient:
         name: str,
         field_type: str,
         description: str = "",
-        contexts: Optional[list] = None,
+        contexts: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Create a custom field."""
         url = f"{self.base_url}/rest/api/3/field"
-        data = {
+        data: Dict[str, Any] = {
             "name": name,
             "type": field_type,
             "description": description or f"Custom field: {name}",
@@ -98,21 +98,80 @@ class JiraClient:
         response.raise_for_status()
         return response.json()
 
-    def create_issue_type(self, name: str, description: str = "") -> Dict[str, Any]:
+    def create_issue_type(
+        self,
+        name: str,
+        description: str = "",
+        issue_type: str = "standard",
+        project_keys: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
         """Create an issue type."""
-        # Note: Creating issue types requires admin permissions and specific endpoints
-        # This is a simplified version
-        project_url = f"{self.base_url}/rest/api/3/project"
-        # In practice, issue types are often created via project templates or admin APIs
-        logger.warning("Issue type creation requires project-specific context")
-        return {"name": name, "description": description, "created": True}
+        url = f"{self.base_url}/rest/api/3/issuetype"
+        data: Dict[str, Any] = {
+            "name": name,
+            "description": description,
+            "type": issue_type,
+        }
+        if project_keys:
+            data["projectKeys"] = project_keys
 
-    def create_workflow(self, name: str, description: str = "") -> Dict[str, Any]:
-        """Create a workflow."""
-        # Workflow creation is complex and typically involves multiple steps
-        # This placeholder indicates the intention
-        logger.warning("Workflow creation requires detailed configuration")
-        return {"name": name, "description": description, "created": True}
+        response = self._get_session().post(url, json=data)
+        response.raise_for_status()
+        logger.info(f"Created issue type {name}")
+        return response.json()
+
+    def create_workflow(
+        self,
+        name: str,
+        description: str = "",
+        steps: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        """Create a workflow with optional status steps."""
+        # Create initial workflow draft
+        url = f"{self.base_url}/rest/api/3/workflow"
+        data: Dict[str, Any] = {"name": name, "description": description}
+        response = self._get_session().post(url, json=data)
+        response.raise_for_status()
+        workflow = response.json()
+        workflow_id = workflow.get("id")
+        logger.info(f"Created workflow draft {name} (ID: {workflow_id})")
+
+        # Add statuses if steps provided
+        if steps and workflow_id:
+            for step in steps:
+                step_name = step.get("name", "")
+                status = step.get("status", "")
+                if step_name and status:
+                    status_url = (
+                        f"{self.base_url}/rest/api/3/workflow/{workflow_id}/status"
+                    )
+                    status_data: Dict[str, Any] = {"name": status}
+                    # Add additional properties if provided
+                    if "properties" in step:
+                        status_data["properties"] = step["properties"]
+
+                    status_response = self._get_session().post(
+                        status_url, json=status_data
+                    )
+                    if status_response.status_code < 300:
+                        logger.info(f"Added status '{status}' to workflow {name}")
+                    else:
+                        logger.warning(
+                            f"Failed to add status '{status}': {status_response.text}"
+                        )
+
+            # Publish the workflow
+            publish_url = f"{self.base_url}/rest/api/3/workflow/{workflow_id}/publish"
+            publish_response = self._get_session().post(publish_url, json={})
+            if publish_response.status_code < 300:
+                logger.info(f"Published workflow {name}")
+                workflow = publish_response.json()
+            else:
+                logger.warning(
+                    f"Failed to publish workflow {name}: {publish_response.text}"
+                )
+
+        return workflow
 
     def close(self):
         """Close the client session."""
