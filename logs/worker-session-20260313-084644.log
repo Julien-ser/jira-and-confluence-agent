@@ -3212,3 +3212,10 @@ hint: Use -f if you really want to add them.
 hint: Disable this message with "git config set advice.addIgnoredFile false"
 [0m
 📝 Log saved: logs/iteration-8.md
+📊 Token Usage: 5000 / Session: 45000 / 64000
+Unstaged changes after reset:
+M	logs/worker-session-20260313-084644.log
+✅ Changes committed
+To https://github.com/Julien-ser/jira-and-confluence-agent.git
+   2119779..a20812a  main -> main
+✅ Pushed to GitHub
