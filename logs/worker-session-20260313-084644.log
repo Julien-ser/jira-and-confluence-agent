@@ -2603,3 +2603,268 @@ Perfect! All tests pass. Now let's commit all the changes:
 Let me check .gitignore to ensure logs and pyc files are properly ignored:
 📝 Log saved: logs/iteration-6.md
 📊 Token Usage: 6750 / Session: 36750 / 64000
+✅ Changes committed
+To https://github.com/Julien-ser/jira-and-confluence-agent.git
+   d76f433..745f595  main -> main
+✅ Pushed to GitHub
+📊 Updated Tasks: 10/12 completed, 2 remaining
+   Next task: Prepare deployment...
+📍 Iteration 7 at Fri Mar 13 09:08:40 AM EDT 2026...
+🤖 OpenCode processing: Prepare deployment
+[0m
+> build · stepfun/step-3.5-flash:free
+[0m
+[0m→ [0mRead TASKS.md
+[0m→ [0mRead README.md
+[0m✱ [0mGlob "**"[90m 100 matches[0m
+I'll prepare deployment for the Jira and Confluence agent project. Let me first explore the current project structure and understand what needs to be deployed.
+[0m→ [0mRead requirements.txt
+Let me read the key source files to understand the project structure and requirements:
+[0m→ [0mRead main.py
+[0m→ [0mRead run_agent.py
+[0m→ [0mRead .gitignore
+[0m→ [0mRead config/example_config.yaml
+[0m
+[0m← [0mWrite Dockerfile
+Wrote file successfully.
+[0m
+[0m← [0mWrite .dockerignore
+Wrote file successfully.
+[0m
+[0m← [0mWrite .env.example
+Wrote file successfully.
+[0m
+Perfect! Now I understand the project structure. It's a production-ready Python CLI application. For deployment preparation, I'll:
+
+1. Create a Dockerfile for containerization
+2. Create docker-compose.yml for orchestration
+3. Create .dockerignore
+4. Create .env.example for environment variables
+5. Update README.md with deployment instructions
+6. Mark TASKS.md as complete
+
+Let me start:
+[0m← [0mWrite docker-compose.yml
+Wrote file successfully.
+[0m
+[0m← [0mEdit .gitignore
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/.gitignore
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/.gitignore
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/.gitignore
+@@ -1,2 +1,45 @@
++# Environment variables
+ .env
+-logs/
+\ No newline at end of file
++.env.*
++!.env.example
++
++# Python cache
++__pycache__/
++*.py[cod]
++*$py.class
++*.so
++.Python
++env/
++venv/
++.venv
++
++# IDEs
++.vscode/
++.idea/
++*.swp
++*.swo
++
++# Project specific
++logs/
++*.log
++.credentials
++
++# Testing
++.pytest_cache/
++.coverage
++htmlcov/
++.tox/
++
++# Build artifacts
++dist/
++build/
++*.egg-info
++
++# OS
++.DS_Store
++Thumbs.db
++
++# Temporary files
++tmp/
++temp/
++*.tmp
+\ No newline at end of file
+
+[0m
+Now let me update the .gitignore to include .env files:
+Now let me update the README.md to add comprehensive deployment instructions:
+[0m← [0mEdit README.md
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/README.md
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/README.md
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/README.md
+@@ -119,8 +119,132 @@
+ 
+ # Report is automatically generated in logs/ directory
+ ```
+ 
++## Deployment
++
++The Jira and Confluence Agent can be deployed in multiple ways:
++
++### Option 1: Docker (Recommended)
++
++The easiest way to deploy is using Docker:
++
++```bash
++# Build the Docker image
++docker build -t jira-confluence-agent .
++
++# Run with a specific config file
++docker run -v $(pwd)/config:/app/config:ro \
++           -v $(pwd)/logs:/app/logs \
++           -e AGENT_CONFIG=/app/config/example_config.yaml \
++           jira-confluence-agent
++
++# Or use docker-compose for easier setup
++docker-compose up
++```
++
++**Using environment variables with Docker Compose:**
++
++1. Copy `.env.example` to `.env` and fill in your credentials
++2. Update `config/agent_config.yaml` or use the example config
++3. Run: `docker-compose up`
++
++The container is designed for manual execution only (restart: "no"). For scheduled/automated runs, consider:
++
++- Using cron to execute `docker-compose run jira-agent`
++- Setting up a CI/CD pipeline (see below)
++
++### Option 2: Direct Python Execution
++
++For simple deployments, run directly on the host:
++
++```bash
++# Install dependencies system-wide
++pip install -r requirements.txt
++
++# Run the agent
++python run_agent.py config/example_config.yaml --dry-run
++
++# With environment variables (recommended for credentials)
++export JIRA_URL="https://your-company.atlassian.net"
++export JIRA_USERNAME="admin@example.com"
++export JIRA_PASSWORD="your_api_token"
++# ... set other variables as needed
++python run_agent.py config/example_config.yaml
++```
++
++### Option 3: Package Installation
++
++Create a pip-installable package (requires `setup.py` - to be added):
++
++```bash
++pip install -e .
++jira-agent config/example_config.yaml
++```
++
++### Production Considerations
++
++#### Security
++- **Never store credentials in config files** for production. Use environment variables or a secrets manager
++- The agent supports reading credentials from environment variables:
++  - `JIRA_URL`, `JIRA_USERNAME`, `JIRA_PASSWORD`
++  - `CONFLUENCE_URL`, `CONFLUENCE_USERNAME`, `CONFLUENCE_PASSWORD`
++- Rotate API tokens regularly
++- Use SSL verification (default: true)
++
++#### Scheduling Automated Runs
++Use cron (with Docker) or systemd timers:
++
++```bash
++# Example cron job (runs daily at 2 AM)
++0 2 * * * cd /path/to/agent && docker-compose run --rm jira-agent /app/config/daily_ops.yaml >> /var/log/jira-agent.log 2>&1
++```
++
++#### Monitoring
++- Check `logs/` directory for `agent.log`, `audit.log`, and reports
++- Set up log rotation for `logs/` directory
++- Monitor exit codes: `0` = success, `1` = failure
++
++#### High Availability
++- The agent is idempotent and can be safely re-run
++- Design configurations to be modular and reusable
++- Use dry-run mode (`--dry-run`) to validate before production runs
++
++### CI/CD Integration
++
++Example GitHub Actions workflow (`.github/workflows/deploy.yml`):
++
++```yaml
++name: Deploy Jira Agent
++on:
++  schedule:
++    - cron: '0 2 * * *'  # Daily at 2 AM
++  workflow_dispatch:
++
++jobs:
++  run-agent:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v3
++      - name: Set up Python
++        uses: actions/setup-python@v4
++        with:
++          python-version: '3.11'
++      - name: Install dependencies
++        run: pip install -r requirements.txt
++      - name: Run agent
++        env:
++          JIRA_URL: ${{ secrets.JIRA_URL }}
++          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
++          JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
++          CONFLUENCE_URL: ${{ secrets.CONFLUENCE_URL }}
++          CONFLUENCE_USERNAME: ${{ secrets.CONFLUENCE_USERNAME }}
++          CONFLUENCE_PASSWORD: ${{ secrets.CONFLUENCE_PASSWORD }}
++        run: |
++          python run_agent.py config/production.yaml --dry-run
++          python run_agent.py config/production.yaml
++```
++
+ ## Current Status
+ 
+ **Project Status: Production Ready** ✅
+ 
+
+[0m
+Now I'll create a DEPLOYMENT.md with detailed deployment guide:
+[0m← [0mWrite DEPLOYMENT.md
+Wrote file successfully.
+[0m
+[0m← [0mEdit TASKS.md
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/TASKS.md
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/TASKS.md
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/TASKS.md
+@@ -18,9 +18,9 @@
+ - [x] Bug fixes
+ 
+ ## Phase 4: Documentation & Deployment
+ - [x] Write documentation
+-- [ ] Prepare deployment
++- [x] Prepare deployment
+ - [ ] Deploy and validate
+ 
+ **Created:** Fri Mar 13 08:46:38 AM EDT 2026
+ **Mission:** Agent that autonmously creates and modifies jira and confluence spaces, in a similar fashion to what a jira admin would be tasked with
+
+[0m
+Now let me mark the "Prepare deployment" task as complete in TASKS.md:

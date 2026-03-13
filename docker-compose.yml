@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  jira-agent:
+    build: .
+    container_name: jira-confluence-agent
+    restart: "no"  # Manual execution only
+    volumes:
+      # Mount configuration file
+      - ./config:/app/config:ro
+      # Mount logs directory (persistent logs)
+      - ./logs:/app/logs
+      # Mount custom scripts or additional configs if needed
+      - ./scripts:/app/scripts:ro
+    environment:
+      # Configuration file path inside container
+      - AGENT_CONFIG=/app/config/agent_config.yaml
+      # Optional: Override connections via environment variables
+      - JIRA_URL=${JIRA_URL}
+      - JIRA_USERNAME=${JIRA_USERNAME}
+      - JIRA_PASSWORD=${JIRA_PASSWORD}
+      - CONFLUENCE_URL=${CONFLUENCE_URL}
+      - CONFLUENCE_USERNAME=${CONFLUENCE_USERNAME}
+      - CONFLUENCE_PASSWORD=${CONFLUENCE_PASSWORD}
+    # Pass configuration file as argument
+    command: ["${AGENT_CONFIG:-/app/config/example_config.yaml}"]
+    # Networks and resources can be configured as needed
+    networks:
+      - agent-network
+
+networks:
+  agent-network:
+    driver: bridge

@@ -120,6 +120,130 @@ with engine:
 # Report is automatically generated in logs/ directory
 ```
 
+## Deployment
+
+The Jira and Confluence Agent can be deployed in multiple ways:
+
+### Option 1: Docker (Recommended)
+
+The easiest way to deploy is using Docker:
+
+```bash
+# Build the Docker image
+docker build -t jira-confluence-agent .
+
+# Run with a specific config file
+docker run -v $(pwd)/config:/app/config:ro \
+           -v $(pwd)/logs:/app/logs \
+           -e AGENT_CONFIG=/app/config/example_config.yaml \
+           jira-confluence-agent
+
+# Or use docker-compose for easier setup
+docker-compose up
+```
+
+**Using environment variables with Docker Compose:**
+
+1. Copy `.env.example` to `.env` and fill in your credentials
+2. Update `config/agent_config.yaml` or use the example config
+3. Run: `docker-compose up`
+
+The container is designed for manual execution only (restart: "no"). For scheduled/automated runs, consider:
+
+- Using cron to execute `docker-compose run jira-agent`
+- Setting up a CI/CD pipeline (see below)
+
+### Option 2: Direct Python Execution
+
+For simple deployments, run directly on the host:
+
+```bash
+# Install dependencies system-wide
+pip install -r requirements.txt
+
+# Run the agent
+python run_agent.py config/example_config.yaml --dry-run
+
+# With environment variables (recommended for credentials)
+export JIRA_URL="https://your-company.atlassian.net"
+export JIRA_USERNAME="admin@example.com"
+export JIRA_PASSWORD="your_api_token"
+# ... set other variables as needed
+python run_agent.py config/example_config.yaml
+```
+
+### Option 3: Package Installation
+
+Create a pip-installable package (requires `setup.py` - to be added):
+
+```bash
+pip install -e .
+jira-agent config/example_config.yaml
+```
+
+### Production Considerations
+
+#### Security
+- **Never store credentials in config files** for production. Use environment variables or a secrets manager
+- The agent supports reading credentials from environment variables:
+  - `JIRA_URL`, `JIRA_USERNAME`, `JIRA_PASSWORD`
+  - `CONFLUENCE_URL`, `CONFLUENCE_USERNAME`, `CONFLUENCE_PASSWORD`
+- Rotate API tokens regularly
+- Use SSL verification (default: true)
+
+#### Scheduling Automated Runs
+Use cron (with Docker) or systemd timers:
+
+```bash
+# Example cron job (runs daily at 2 AM)
+0 2 * * * cd /path/to/agent && docker-compose run --rm jira-agent /app/config/daily_ops.yaml >> /var/log/jira-agent.log 2>&1
+```
+
+#### Monitoring
+- Check `logs/` directory for `agent.log`, `audit.log`, and reports
+- Set up log rotation for `logs/` directory
+- Monitor exit codes: `0` = success, `1` = failure
+
+#### High Availability
+- The agent is idempotent and can be safely re-run
+- Design configurations to be modular and reusable
+- Use dry-run mode (`--dry-run`) to validate before production runs
+
+### CI/CD Integration
+
+Example GitHub Actions workflow (`.github/workflows/deploy.yml`):
+
+```yaml
+name: Deploy Jira Agent
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM
+  workflow_dispatch:
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run agent
+        env:
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+          JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+          CONFLUENCE_URL: ${{ secrets.CONFLUENCE_URL }}
+          CONFLUENCE_USERNAME: ${{ secrets.CONFLUENCE_USERNAME }}
+          CONFLUENCE_PASSWORD: ${{ secrets.CONFLUENCE_PASSWORD }}
+        run: |
+          python run_agent.py config/production.yaml --dry-run
+          python run_agent.py config/production.yaml
+```
+
 ## Current Status
 
 **Project Status: Production Ready** ✅
