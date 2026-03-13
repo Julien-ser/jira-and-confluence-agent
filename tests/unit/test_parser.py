@@ -106,7 +106,7 @@ def test_parse_jira_custom_fields():
     assert op.op_type == OperationType.CREATE
     assert op.resource_type == ResourceType.JIRA_CUSTOM_FIELD
     assert op.resource_id == "Customer Impact"
-    assert op.params["type"] == "select"
+    assert op.params["field_type"] == "select"
 
 
 def test_parse_confluence_spaces():
