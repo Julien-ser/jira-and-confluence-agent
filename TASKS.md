@@ -3,8 +3,8 @@
 **Mission:** Agent that autonmously creates and modifies jira and confluence spaces, in a similar fashion to what a jira admin would be tasked with
 
 ## Phase 1: Setup & Planning
-- [ ] Review requirements and design architecture
-- [ ] Set up development environment and dependencies
+- [x] Review requirements and design architecture
+- [x] Set up development environment and dependencies
 - [ ] Create project structure
 
 ## Phase 2: Core Implementation  

@@ -1,0 +1,90 @@
+# Example Jira and Confluence Agent Configuration
+# Copy this file and customize for your environment
+
+# Connection settings for Jira and Confluence instances
+connections:
+  jira:
+    url: "https://your-company.atlassian.net"
+    username: "user@example.com"
+    password: "YOUR_API_TOKEN"  # Use API token, not password
+    verify_ssl: true
+    timeout: 30
+
+  confluence:
+    url: "https://your-company.atlassian.net"
+    username: "user@example.com"
+    password: "YOUR_API_TOKEN"
+    verify_ssl: true
+    timeout: 30
+
+# Jira operations to perform
+jira:
+  projects:
+    - key: "DEMO"
+      name: "Demo Project"
+      description: "Project created by automated agent"
+      projectTypeKey: "business"
+      lead: "admin@example.com"
+
+  custom_fields:
+    - name: "Customer Impact"
+      type: "select"
+      description: "How much does this affect customers?"
+      contexts:
+        - global: true
+          projects: []
+
+  issue_types:
+    - name: "Enhancement"
+      description: "New feature or improvement"
+      create: true
+
+  workflows:
+    - name: "Standard Workflow"
+      description: "Basic workflow for issues"
+      steps:
+        - name: "To Do"
+          status: "TO_DO"
+        - name: "In Progress"
+          status: "IN_PROGRESS"
+        - name: "Done"
+          status: "DONE"
+
+# Confluence operations to perform
+confluence:
+  spaces:
+    - key: "DOC"
+      name: "Documentation Space"
+      description: "Central documentation repository"
+      create: true
+
+  pages:
+    - title: "Project Kickoff"
+      space_key: "DOC"
+      content: |
+        <h1>Project Kickoff</h1>
+        <p>This page was automatically created by the Jira and Confluence Agent.</p>
+        <h2>Getting Started</h2>
+        <ul>
+          <li>Review project goals</li>
+          <li>Set up initial tasks</li>
+          <li>Configure permissions</li>
+        </ul>
+      create: true
+
+  templates:
+    - name: "Meeting Notes"
+      space_key: "DOC"
+      content: |
+        <h1>Meeting Notes</h1>
+        <p>Date: {{date}}</p>
+        <p>Attendees: {{attendees}}</p>
+        <h2>Agenda</h2>
+        <ul>
+          <li>{{agenda_item_1}}</li>
+          <li>{{agenda_item_2}}</li>
+        </ul>
+        <h2>Action Items</h2>
+        <ul>
+          <li>{{action_item_1}}</li>
+        </ul>
