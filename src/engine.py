@@ -129,6 +129,8 @@ class Engine:
                 return client.update_project(operation.resource_id, **params)
             elif op_type == OperationType.GET:
                 return client.get_project(operation.resource_id)
+            elif op_type == OperationType.DELETE:
+                return client.delete_project(operation.resource_id)
             else:
                 raise ValueError(f"Unsupported operation {op_type} for JIRA_PROJECT")
 
@@ -137,6 +139,8 @@ class Engine:
                 return client.create_custom_field(**params)
             elif op_type == OperationType.GET:
                 return client.get_custom_fields()
+            elif op_type == OperationType.DELETE:
+                return client.delete_custom_field(operation.resource_id)
             else:
                 raise ValueError(
                     f"Unsupported operation {op_type} for JIRA_CUSTOM_FIELD"
@@ -145,12 +149,16 @@ class Engine:
         elif resource == ResourceType.JIRA_ISSUE_TYPE:
             if op_type in [OperationType.CREATE, OperationType.UPDATE]:
                 return client.create_issue_type(**params)
+            elif op_type == OperationType.DELETE:
+                return client.delete_issue_type(operation.resource_id)
             else:
                 raise ValueError(f"Unsupported operation {op_type} for JIRA_ISSUE_TYPE")
 
         elif resource == ResourceType.JIRA_WORKFLOW:
             if op_type in [OperationType.CREATE, OperationType.UPDATE]:
                 return client.create_workflow(**params)
+            elif op_type == OperationType.DELETE:
+                return client.delete_workflow(operation.resource_id)
             else:
                 raise ValueError(f"Unsupported operation {op_type} for JIRA_WORKFLOW")
 
@@ -161,6 +169,8 @@ class Engine:
                 return client.update_space(operation.resource_id, **params)
             elif op_type == OperationType.GET:
                 return client.get_space(operation.resource_id)
+            elif op_type == OperationType.DELETE:
+                return client.delete_space(operation.resource_id)
             else:
                 raise ValueError(
                     f"Unsupported operation {op_type} for CONFLUENCE_SPACE"
@@ -186,12 +196,19 @@ class Engine:
                             version=version,
                         )
                 raise ValueError(f"Cannot find page {operation.resource_id} for update")
+            elif op_type == OperationType.DELETE:
+                page_id = params.get("id") or self._lookup_page_id(client, operation)
+                if page_id:
+                    return client.delete_page(page_id)
+                raise ValueError(f"Cannot find page {operation.resource_id} for delete")
             else:
                 raise ValueError(f"Unsupported operation {op_type} for CONFLUENCE_PAGE")
 
         elif resource == ResourceType.CONFLUENCE_TEMPLATE:
             if op_type == OperationType.CREATE:
                 return client.create_template(**params)
+            elif op_type == OperationType.DELETE:
+                return client.delete_template(operation.resource_id)
             else:
                 raise ValueError(
                     f"Unsupported operation {op_type} for CONFLUENCE_TEMPLATE"

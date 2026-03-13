@@ -67,6 +67,14 @@ class ConfluenceClient:
         logger.info(f"Updated space {key}")
         return response.json()
 
+    def delete_space(self, key: str) -> Dict[str, Any]:
+        """Delete a space."""
+        url = f"{self.base_url}/rest/api/2/space/{key}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted space {key}")
+        return response.json()
+
     def create_page(
         self,
         space_key: str,
@@ -109,6 +117,14 @@ class ConfluenceClient:
         logger.info(f"Updated page {page_id}")
         return response.json()
 
+    def delete_page(self, page_id: str) -> Dict[str, Any]:
+        """Delete a page."""
+        url = f"{self.base_url}/rest/api/2/content/{page_id}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted page {page_id}")
+        return response.json()
+
     def get_page_by_title(self, space_key: str, title: str) -> Optional[Dict[str, Any]]:
         """Get page by title in a space."""
         url = f"{self.base_url}/rest/api/2/content"
@@ -147,12 +163,21 @@ class ConfluenceClient:
         logger.info(f"Created template {name}")
         return response.json()
 
+    def delete_template(self, template_id: str) -> Dict[str, Any]:
+        """Delete a template."""
+        url = f"{self.base_url}/rest/api/2/template/{template_id}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted template {template_id}")
+        return response.json()
+
     def close(self):
         """Close the client session."""
         if self.session:
             self.session.close()
 
     def __enter__(self):
+        self._get_session()  # Create session on enter
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

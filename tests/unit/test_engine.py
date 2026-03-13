@@ -110,34 +110,30 @@ def test_execute_operation_dry_run():
 
 def test_execute_operation_unknown_resource_type():
     """Test execute_operation with unknown resource type."""
-    # Create a custom resource type that's not handled
-    from src.models import ResourceType as RT
 
-    original_values = list(RT.__members__.values())
-    new_type = RT("unknown_test_type")
-    try:
-        connections = {
-            "jira": {
-                "url": "https://test.atlassian.net",
-                "username": "user",
-                "password": "pass",
-            }
+    # Create a custom resource type that's not handled using a simple object
+    class FakeResourceType:
+        value = "unknown_test_type"
+
+    fake_rt = FakeResourceType()
+    connections = {
+        "jira": {
+            "url": "https://test.atlassian.net",
+            "username": "user",
+            "password": "pass",
         }
-        engine = Engine(connections=connections)
-        op = Operation(
-            op_type=OperationType.CREATE,
-            resource_type=new_type,
-            resource_id="TEST",
-            params={},
-            description="Unknown operation",
-        )
-        result = engine.execute_operation(op)
-        assert result["success"] is False
-        assert "No client available" in result["error"]
-    finally:
-        # Cleanup: remove the added member from the enum
-        if hasattr(RT, "unknown_test_type"):
-            delattr(RT, "unknown_test_type")
+    }
+    engine = Engine(connections=connections)
+    op = Operation(
+        op_type=OperationType.CREATE,
+        resource_type=fake_rt,
+        resource_id="TEST",
+        params={},
+        description="Unknown operation",
+    )
+    result = engine.execute_operation(op)
+    assert result["success"] is False
+    assert "No client available" in result["error"]
 
 
 def test_run_executes_all_operations(mocker):

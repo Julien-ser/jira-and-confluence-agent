@@ -1064,3 +1064,1101 @@ Wrote file successfully.
 [0m
 Let me update the todo and work on the README:
 📝 Log saved: logs/iteration-4.md
+📊 Token Usage: 5250 / Session: 15750 / 64000
+Unstaged changes after reset:
+M	logs/worker-session-20260313-084644.log
+✅ Changes committed
+To https://github.com/Julien-ser/jira-and-confluence-agent.git
+   a14ff9f..9dc0220  main -> main
+✅ Pushed to GitHub
+📊 Updated Tasks: 3/12 completed, 9 remaining
+   Next task: Implement main features...
+📍 Iteration 5 at Fri Mar 13 08:59:07 AM EDT 2026...
+✓ Progress: Git commit found
+📊 Task attempt 3: Progress detected, continuing...
+📚 Loading context from previous iteration attempts...
+   Found context in: iteration-4.md
+🤖 OpenCode processing: Implement main features
+[0m
+> build · stepfun/step-3.5-flash:free
+[0m
+[0m→ [0mRead TASKS.md
+[0m→ [0mRead README.md
+[0m→ [0mRead ARCHITECTURE.md
+[0m✱ [0mGlob "src/*.py"[90m 8 matches[0m
+I'll read the project files to understand the current state and determine what main features need to be implemented.
+[0m→ [0mRead src/jira_client.py
+[0m→ [0mRead src/models.py
+[0m→ [0mRead config/example_config.yaml
+[0m→ [0mRead src/confluence_client.py
+[0m→ [0mRead src/engine.py
+[0m→ [0mRead src/parser.py
+Let me read the source files to understand what's already implemented:
+[0m→ [0mRead src/reporter.py
+[0m→ [0mRead src/utils.py
+[0m→ [0mRead requirements.txt
+Let me read the remaining source files:
+Let me check what files actually exist and what tests are present:
+[0m✱ [0mGlob "**/__init__.py"[90m 1 match[0m
+[0m
+[0m$ [0mls -la /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/
+total 68
+drwxr-xr-x  8 julien julien 4096 Mar 13 08:57 .
+drwxr-xr-x 18 julien julien 4096 Mar 13 08:46 ..
+-rw-r--r--  1 julien julien 3035 Mar 13 08:47 ARCHITECTURE.md
+drwxr-xr-x  2 julien julien 4096 Mar 13 08:50 config
+drwxr-xr-x  7 julien julien 4096 Mar 13 08:59 .git
+-rw-r--r--  1 julien julien   10 Mar 13 08:51 .gitignore
+drwxr-xr-x  2 julien julien 4096 Mar 13 08:59 logs
+-rw-r--r--  1 julien julien 3148 Mar 13 08:57 main.py
+-rw-r--r--  1 julien julien 1280 Mar 13 08:46 prompt.txt
+-rw-r--r--  1 julien julien 4200 Mar 13 08:49 README.md
+-rw-r--r--  1 julien julien  296 Mar 13 08:49 requirements.txt
+drwxr-xr-x  3 julien julien 4096 Mar 13 08:47 .ruff_cache
+drwxr-xr-x  3 julien julien 4096 Mar 13 08:53 src
+-rw-r--r--  1 julien julien  865 Mar 13 08:51 TASKS.md
+-rw-r--r--  1 julien julien  865 Mar 13 08:46 TASKS_original.md
+drwxr-xr-x  5 julien julien 4096 Mar 13 08:47 tests
+[0m
+[0m$ [0mls -la /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/ 2>/dev/null || echo "No tests directory"
+total 20
+drwxr-xr-x 5 julien julien 4096 Mar 13 08:47 .
+drwxr-xr-x 8 julien julien 4096 Mar 13 08:57 ..
+drwxr-xr-x 2 julien julien 4096 Mar 13 08:47 fixtures
+drwxr-xr-x 2 julien julien 4096 Mar 13 08:47 integration
+drwxr-xr-x 2 julien julien 4096 Mar 13 08:58 unit
+[0m
+Let me check what's in main.py and what tests exist:
+[0m$ [0mls -la /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/
+/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/:
+total 8
+drwxr-xr-x 2 julien julien 4096 Mar 13 08:47 .
+drwxr-xr-x 5 julien julien 4096 Mar 13 08:47 ..
+
+/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/:
+total 40
+drwxr-xr-x 2 julien julien 4096 Mar 13 08:58 .
+drwxr-xr-x 5 julien julien 4096 Mar 13 08:47 ..
+-rw-r--r-- 1 julien julien 8993 Mar 13 08:58 test_clients.py
+-rw-r--r-- 1 julien julien 5440 Mar 13 08:58 test_engine.py
+-rw-r--r-- 1 julien julien 3303 Mar 13 08:54 test_models.py
+-rw-r--r-- 1 julien julien 7072 Mar 13 08:58 test_parser.py
+[0m
+[0m→ [0mRead main.py
+Let me examine the test files to see what's already covered:
+[0m→ [0mRead tests/unit/test_engine.py
+[0m→ [0mRead tests/unit/test_clients.py
+[0m→ [0mRead tests/unit/test_parser.py
+[0m→ [0mRead tests/unit/test_models.py
+Let me also read the test_models.py to complete my understanding:
+[0m
+[0m# [0mTodos
+[ ] Add DELETE operations to Jira and Confluence clients (delete_project, delete_issue_type, delete_custom_field, delete_workflow, delete_space, delete_page, delete_template)
+[ ] Update engine._dispatch_operation to handle DELETE operations
+[ ] Add Jira screens CRUD operations to jira_client and engine
+[ ] Add Jira permissions operations (grant/revoke) to jira_client and engine
+[ ] Add Confluence permissions operations to confluence_client and engine
+[ ] Create integration tests for end-to-end workflows
+[ ] Run all unit tests and fix any failures
+[ ] Update README.md with current project status and usage examples
+[ ] Update TASKS.md marking Phase 2 complete
+[0m
+Now I have a complete understanding. The project is quite advanced with all core components implemented and unit tests in place. To "Implement main features" and complete Phase 2, I need to:
+
+1. Add missing DELETE operations for resources (pages, etc.)
+2. Add missing features: Jira screens, permissions; Confluence delete, permissions
+3. Create integration tests
+4. Ensure the system runs end-to-end
+5. Run tests to verify everything works
+6. Update TASKS.md and README.md
+
+Let me create a todo list and start implementing. I'll focus on the most critical missing features first: DELETE operations and then basic integration tests.
+
+Let me start by creating the todo list:
+[0m# [0mTodos
+[ ] Add DELETE operations to Jira and Confluence clients (delete_project, delete_issue_type, delete_custom_field, delete_workflow, delete_space, delete_page, delete_template)
+[ ] Update engine._dispatch_operation to handle DELETE operations
+[ ] Add Jira screens CRUD operations to jira_client and engine
+[ ] Add Jira permissions operations (grant/revoke) to jira_client and engine
+[ ] Add Confluence permissions operations to confluence_client and engine
+[ ] Create integration tests for end-to-end workflows
+[ ] Run all unit tests and fix any failures
+[ ] Update README.md with current project status and usage examples
+[ ] Update TASKS.md marking Phase 2 complete
+[0m
+Let me update the first todo as in progress and start implementing DELETE operations. I'll begin by adding delete methods to the Jira client:
+Now let me add DELETE operations to jira_client.py. I'll add them after the corresponding methods:
+[0m← [0mEdit src/jira_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+@@ -68,8 +68,16 @@
+     response.raise_for_status()
+     logger.info(f"Updated project {key}")
+     return response.json()
+ 
++def delete_project(self, key: str) -> Dict[str, Any]:
++    """Delete a project."""
++    url = f"{self.base_url}/rest/api/3/project/{key}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted project {key}")
++    return response.json()
++
+ def create_custom_field(
+     self,
+     name: str,
+     field_type: str,
+
+[0m
+[0m← [0mEdit src/jira_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+@@ -105,8 +105,16 @@
+     response = self._get_session().get(url)
+     response.raise_for_status()
+     return response.json()
+ 
++def delete_custom_field(self, field_id: str) -> Dict[str, Any]:
++    """Delete a custom field."""
++    url = f"{self.base_url}/rest/api/3/field/{field_id}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted custom field {field_id}")
++    return response.json()
++
+ def create_issue_type(
+     self,
+     name: str,
+     description: str = "",
+
+[0m
+[0m← [0mEdit src/jira_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+@@ -135,8 +135,16 @@
+     response.raise_for_status()
+     logger.info(f"Created issue type {name}")
+     return response.json()
+ 
++def delete_issue_type(self, issue_type_id: str) -> Dict[str, Any]:
++    """Delete an issue type."""
++    url = f"{self.base_url}/rest/api/3/issuetype/{issue_type_id}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted issue type {issue_type_id}")
++    return response.json()
++
+ def create_workflow(
+     self,
+     name: str,
+     description: str = "",
+
+[0m
+[0m← [0mEdit src/jira_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+@@ -196,8 +196,16 @@
+             )
+ 
+     return workflow
+ 
++def delete_workflow(self, workflow_id: str) -> Dict[str, Any]:
++    """Delete a workflow."""
++    url = f"{self.base_url}/rest/api/3/workflow/{workflow_id}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted workflow {workflow_id}")
++    return response.json()
++
+ def close(self):
+     """Close the client session."""
+     if self.session:
+         self.session.close()
+
+[0m
+Now add delete operations to confluence_client.py:
+[0m← [0mEdit src/confluence_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+@@ -66,8 +66,16 @@
+     response.raise_for_status()
+     logger.info(f"Updated space {key}")
+     return response.json()
+ 
++def delete_space(self, key: str) -> Dict[str, Any]:
++    """Delete a space."""
++    url = f"{self.base_url}/rest/api/2/space/{key}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted space {key}")
++    return response.json()
++
+ def create_page(
+     self,
+     space_key: str,
+     title: str,
+
+[0m
+[0m← [0mEdit src/confluence_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+@@ -116,8 +116,16 @@
+     response.raise_for_status()
+     logger.info(f"Updated page {page_id}")
+     return response.json()
+ 
++def delete_page(self, page_id: str) -> Dict[str, Any]:
++    """Delete a page."""
++    url = f"{self.base_url}/rest/api/2/content/{page_id}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted page {page_id}")
++    return response.json()
++
+ def get_page_by_title(self, space_key: str, title: str) -> Optional[Dict[str, Any]]:
+     """Get page by title in a space."""
+     url = f"{self.base_url}/rest/api/2/content"
+     params = {
+
+[0m
+[0m← [0mEdit src/confluence_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+@@ -162,8 +162,16 @@
+     response.raise_for_status()
+     logger.info(f"Created template {name}")
+     return response.json()
+ 
++def delete_template(self, template_id: str) -> Dict[str, Any]:
++    """Delete a template."""
++    url = f"{self.base_url}/rest/api/2/template/{template_id}"
++    response = self._get_session().delete(url)
++    response.raise_for_status()
++    logger.info(f"Deleted template {template_id}")
++    return response.json()
++
+ def close(self):
+     """Close the client session."""
+     if self.session:
+         self.session.close()
+
+[0m
+Now update engine.py to handle DELETE operations:
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -150,8 +150,10 @@
+ 
+ elif resource == ResourceType.JIRA_WORKFLOW:
+     if op_type in [OperationType.CREATE, OperationType.UPDATE]:
+         return client.create_workflow(**params)
++    elif op_type == OperationType.DELETE:
++        return client.delete_workflow(operation.resource_id)
+     else:
+         raise ValueError(f"Unsupported operation {op_type} for JIRA_WORKFLOW")
+ 
+ elif resource == ResourceType.CONFLUENCE_SPACE:
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -128,8 +128,10 @@
+     elif op_type == OperationType.UPDATE:
+         return client.update_project(operation.resource_id, **params)
+     elif op_type == OperationType.GET:
+         return client.get_project(operation.resource_id)
++    elif op_type == OperationType.DELETE:
++        return client.delete_project(operation.resource_id)
+     else:
+         raise ValueError(f"Unsupported operation {op_type} for JIRA_PROJECT")
+ 
+ elif resource == ResourceType.JIRA_CUSTOM_FIELD:
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -146,8 +146,10 @@
+ 
+ elif resource == ResourceType.JIRA_ISSUE_TYPE:
+     if op_type in [OperationType.CREATE, OperationType.UPDATE]:
+         return client.create_issue_type(**params)
++    elif op_type == OperationType.DELETE:
++        return client.delete_issue_type(operation.resource_id)
+     else:
+         raise ValueError(f"Unsupported operation {op_type} for JIRA_ISSUE_TYPE")
+ 
+ elif resource == ResourceType.JIRA_WORKFLOW:
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -138,8 +138,10 @@
+ if op_type == OperationType.CREATE:
+     return client.create_custom_field(**params)
+ elif op_type == OperationType.GET:
+     return client.get_custom_fields()
++elif op_type == OperationType.DELETE:
++    return client.delete_custom_field(operation.resource_id)
+ else:
+     raise ValueError(
+         f"Unsupported operation {op_type} for JIRA_CUSTOM_FIELD"
+     )
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -168,8 +168,10 @@
+ elif op_type == OperationType.UPDATE:
+     return client.update_space(operation.resource_id, **params)
+ elif op_type == OperationType.GET:
+     return client.get_space(operation.resource_id)
++elif op_type == OperationType.DELETE:
++    return client.delete_space(operation.resource_id)
+ else:
+     raise ValueError(
+         f"Unsupported operation {op_type} for CONFLUENCE_SPACE"
+     )
+
+[0m
+Now add DELETE for CONFLUENCE_TEMPLATE:
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -201,8 +201,10 @@
+ 
+ elif resource == ResourceType.CONFLUENCE_TEMPLATE:
+     if op_type == OperationType.CREATE:
+         return client.create_template(**params)
++    elif op_type == OperationType.DELETE:
++        return client.delete_template(operation.resource_id)
+     else:
+         raise ValueError(
+             f"Unsupported operation {op_type} for CONFLUENCE_TEMPLATE"
+         )
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -195,8 +195,13 @@
+                     content=params.get("content", ""),
+                     version=version,
+                 )
+         raise ValueError(f"Cannot find page {operation.resource_id} for update")
++    elif op_type == OperationType.DELETE:
++        page_id = params.get("id") or self._lookup_page_id(client, operation)
++        if page_id:
++            return client.delete_page(page_id)
++        raise ValueError(f"Cannot find page {operation.resource_id} for delete")
+     else:
+         raise ValueError(f"Unsupported operation {op_type} for CONFLUENCE_PAGE")
+ 
+ elif resource == ResourceType.CONFLUENCE_TEMPLATE:
+
+[0m
+Now add DELETE for CONFLUENCE_PAGE:
+[0m# [0mTodos
+[x] Add DELETE operations to Jira and Confluence clients (delete_project, delete_issue_type, delete_custom_field, delete_workflow, delete_space, delete_page, delete_template)
+[x] Update engine._dispatch_operation to handle DELETE operations
+[ ] Add Jira screens CRUD operations to jira_client and engine
+[ ] Add Jira permissions operations (grant/revoke) to jira_client and engine
+[ ] Add Confluence permissions operations to confluence_client and engine
+[ ] Create integration tests for end-to-end workflows
+[ ] Run all unit tests and fix any failures
+[ ] Update README.md with current project status and usage examples
+[ ] Update TASKS.md marking Phase 2 complete
+[0m
+Let me mark DELETE operations as complete and update the engine dispatch task as complete, then run tests:
+Now let me run the existing unit tests to ensure my changes didn't break anything:
+[0m$ [0mpython -m pytest tests/unit/ -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- /home/julien/Desktop/Free-Wiggum-opencode/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent
+plugins: langsmith-0.7.16, anyio-4.12.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1, dash-4.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 37 items
+
+tests/unit/test_clients.py::test_jira_client_initialization PASSED       [  2%]
+tests/unit/test_clients.py::test_jira_client_get_session PASSED          [  5%]
+tests/unit/test_clients.py::test_jira_client_create_project PASSED       [  8%]
+tests/unit/test_clients.py::test_jira_client_get_project PASSED          [ 10%]
+tests/unit/test_clients.py::test_jira_client_get_project_not_found PASSED [ 13%]
+tests/unit/test_clients.py::test_jira_client_create_custom_field PASSED  [ 16%]
+tests/unit/test_clients.py::test_jira_client_context_manager FAILED      [ 18%]
+tests/unit/test_clients.py::test_confluence_client_initialization PASSED [ 21%]
+tests/unit/test_clients.py::test_confluence_client_create_space PASSED   [ 24%]
+tests/unit/test_clients.py::test_confluence_client_create_page PASSED    [ 27%]
+tests/unit/test_clients.py::test_confluence_client_get_page_by_title PASSED [ 29%]
+tests/unit/test_clients.py::test_confluence_client_get_page_by_title_not_found PASSED [ 32%]
+tests/unit/test_engine.py::test_engine_initialization PASSED             [ 35%]
+tests/unit/test_engine.py::test_engine_dry_run_mode PASSED               [ 37%]
+tests/unit/test_engine.py::test_engine_jira_client_property PASSED       [ 40%]
+tests/unit/test_engine.py::test_engine_confluence_client_property PASSED [ 43%]
+tests/unit/test_engine.py::test_engine_client_property_missing_connection PASSED [ 45%]
+tests/unit/test_engine.py::test_execute_operation_dry_run PASSED         [ 48%]
+tests/unit/test_engine.py::test_execute_operation_unknown_resource_type FAILED [ 51%]
+tests/unit/test_engine.py::test_run_executes_all_operations PASSED       [ 54%]
+tests/unit/test_models.py::test_operation_type_enum PASSED               [ 56%]
+tests/unit/test_models.py::test_resource_type_enum PASSED                [ 59%]
+tests/unit/test_models.py::test_operation_to_dict PASSED                 [ 62%]
+tests/unit/test_models.py::test_report_initialization PASSED             [ 64%]
+tests/unit/test_models.py::test_report_add_result PASSED                 [ 67%]
+tests/unit/test_models.py::test_report_success_rate PASSED               [ 70%]
+tests/unit/test_models.py::test_connection_config PASSED                 [ 72%]
+tests/unit/test_parser.py::test_parse_jira_project PASSED                [ 75%]
+tests/unit/test_parser.py::test_parse_jira_issue_types PASSED            [ 78%]
+tests/unit/test_parser.py::test_parse_jira_workflows PASSED              [ 81%]
+tests/unit/test_parser.py::test_parse_jira_custom_fields PASSED          [ 83%]
+tests/unit/test_parser.py::test_parse_confluence_spaces PASSED           [ 86%]
+tests/unit/test_parser.py::test_parse_confluence_pages PASSED            [ 89%]
+tests/unit/test_parser.py::test_parse_confluence_templates PASSED        [ 91%]
+tests/unit/test_parser.py::test_parse_full_config PASSED                 [ 94%]
+tests/unit/test_parser.py::test_parser_empty_config PASSED               [ 97%]
+tests/unit/test_parser.py::test_parser_missing_project_key PASSED        [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_jira_client_context_manager _______________________
+
+    def test_jira_client_context_manager():
+        """Test JiraClient as context manager."""
+        client = JiraClient(
+            base_url="https://test.atlassian.net",
+            username="user@example.com",
+            password="token123",
+        )
+        with client as c:
+            assert c is client
+>           assert client.session is not None
+E           assert None is not None
+E            +  where None = <src.jira_client.JiraClient object at 0x7ff0a86218c0>.session
+
+tests/unit/test_clients.py:153: AssertionError
+_________________ test_execute_operation_unknown_resource_type _________________
+
+    def test_execute_operation_unknown_resource_type():
+        """Test execute_operation with unknown resource type."""
+        # Create a custom resource type that's not handled
+        from src.models import ResourceType as RT
+    
+        original_values = list(RT.__members__.values())
+>       new_type = RT("unknown_test_type")
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_engine.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/enum.py:708: in __call__
+    return cls.__new__(cls, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <enum 'ResourceType'>, value = 'unknown_test_type'
+
+    def __new__(cls, value):
+        # all enum instances are actually created during class construction
+        # without calling this method; this method is called by the metaclass'
+        # __call__ (i.e. Color(3) ), and by pickle
+        if type(value) is cls:
+            # For lookups like Color(Color.RED)
+            return value
+        # by-value search for a matching enum member
+        # see if it's in the reverse mapping (for hashable values)
+        try:
+            return cls._value2member_map_[value]
+        except KeyError:
+            # Not found, no need to do long O(n) search
+            pass
+        except TypeError:
+            # not there, now do long search -- O(n) behavior
+            for name, unhashable_values in cls._unhashable_values_map_.items():
+                if value in unhashable_values:
+                    return cls[name]
+            for name, member in cls._member_map_.items():
+                if value == member._value_:
+                    return cls[name]
+        # still not found -- verify that members exist, in-case somebody got here mistakenly
+        # (such as via super when trying to override __new__)
+        if not cls._member_map_:
+            if getattr(cls, '_%s__in_progress' % cls.__name__, False):
+                raise TypeError('do not use `super().__new__; call the appropriate __new__ directly') from None
+            raise TypeError("%r has no members defined" % cls)
+        #
+        # still not found -- try _missing_ hook
+        try:
+            exc = None
+            result = cls._missing_(value)
+        except Exception as e:
+            exc = e
+            result = None
+        try:
+            if isinstance(result, cls):
+                return result
+            elif (
+                    Flag is not None and issubclass(cls, Flag)
+                    and cls._boundary_ is EJECT and isinstance(result, int)
+                ):
+                return result
+            else:
+                ve_exc = ValueError("%r is not a valid %s" % (value, cls.__qualname__))
+                if result is None and exc is None:
+>                   raise ve_exc
+E                   ValueError: 'unknown_test_type' is not a valid ResourceType
+
+/usr/lib/python3.14/enum.py:1193: ValueError
+=========================== short test summary info ============================
+FAILED tests/unit/test_clients.py::test_jira_client_context_manager - assert ...
+FAILED tests/unit/test_engine.py::test_execute_operation_unknown_resource_type
+========================= 2 failed, 35 passed in 0.36s =========================
+[0m
+There are 2 test failures. I need to fix them:
+
+1. `test_jira_client_context_manager` - expects session to be created upon entering context
+2. `test_execute_operation_unknown_resource_type` - creates a fake enum member which fails in Python 3.14
+
+Let me fix both issues:
+[0m# [0mTodos
+[x] Add DELETE operations to Jira and Confluence clients (delete_project, delete_issue_type, delete_custom_field, delete_workflow, delete_space, delete_page, delete_template)
+[x] Update engine._dispatch_operation to handle DELETE operations
+[ ] Fix test failures: context manager and unknown resource type
+[ ] Create integration tests for end-to-end workflows
+[ ] Run all unit tests and verify all pass
+[ ] Add Jira screens CRUD operations to jira_client and engine
+[ ] Add Jira permissions operations (grant/revoke) to jira_client and engine
+[ ] Add Confluence permissions operations to confluence_client and engine
+[ ] Update README.md with current project status and usage examples
+[ ] Update TASKS.md marking Phase 2 complete
+[0m
+Now fix the context manager methods in both clients:
+[0m← [0mEdit src/jira_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py
+@@ -210,8 +210,9 @@
+     if self.session:
+         self.session.close()
+ 
+ def __enter__(self):
++    self._get_session()  # Create session on enter
+     return self
+ 
+ def __exit__(self, exc_type, exc_val, exc_tb):
+     self.close()
+
+[0m
+[0m← [0mEdit src/confluence_client.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/confluence_client.py
+@@ -176,8 +176,9 @@
+     if self.session:
+         self.session.close()
+ 
+ def __enter__(self):
++    self._get_session()  # Create session on enter
+     return self
+ 
+ def __exit__(self, exc_type, exc_val, exc_tb):
+     self.close()
+
+[0m
+Now fix the test for unknown resource type:
+[0m← [0mEdit tests/unit/test_engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/test_engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/test_engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/test_engine.py
+@@ -109,36 +109,32 @@
+ 
+ 
+ def test_execute_operation_unknown_resource_type():
+     """Test execute_operation with unknown resource type."""
+-    # Create a custom resource type that's not handled
+-    from src.models import ResourceType as RT
+ 
+-    original_values = list(RT.__members__.values())
+-    new_type = RT("unknown_test_type")
+-    try:
+-        connections = {
+-            "jira": {
+-                "url": "https://test.atlassian.net",
+-                "username": "user",
+-                "password": "pass",
+-            }
++    # Create a custom resource type that's not handled using a simple object
++    class FakeResourceType:
++        value = "unknown_test_type"
++
++    fake_rt = FakeResourceType()
++    connections = {
++        "jira": {
++            "url": "https://test.atlassian.net",
++            "username": "user",
++            "password": "pass",
+         }
+-        engine = Engine(connections=connections)
+-        op = Operation(
+-            op_type=OperationType.CREATE,
+-            resource_type=new_type,
+-            resource_id="TEST",
+-            params={},
+-            description="Unknown operation",
+-        )
+-        result = engine.execute_operation(op)
+-        assert result["success"] is False
+-        assert "No client available" in result["error"]
+-    finally:
+-        # Cleanup: remove the added member from the enum
+-        if hasattr(RT, "unknown_test_type"):
+-            delattr(RT, "unknown_test_type")
++    }
++    engine = Engine(connections=connections)
++    op = Operation(
++        op_type=OperationType.CREATE,
++        resource_type=fake_rt,
++        resource_id="TEST",
++        params={},
++        description="Unknown operation",
++    )
++    result = engine.execute_operation(op)
++    assert result["success"] is False
++    assert "No client available" in result["error"]
+ 
+ 
+ def test_run_executes_all_operations(mocker):
+     """Test run method executes all operations and generates report."""
+
+[0m
+Let me run the tests again to see if the fixes work:
+[0m$ [0mpython -m pytest tests/unit/ -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- /home/julien/Desktop/Free-Wiggum-opencode/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent
+plugins: langsmith-0.7.16, anyio-4.12.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1, dash-4.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 37 items
+
+tests/unit/test_clients.py::test_jira_client_initialization PASSED       [  2%]
+tests/unit/test_clients.py::test_jira_client_get_session PASSED          [  5%]
+tests/unit/test_clients.py::test_jira_client_create_project PASSED       [  8%]
+tests/unit/test_clients.py::test_jira_client_get_project PASSED          [ 10%]
+tests/unit/test_clients.py::test_jira_client_get_project_not_found PASSED [ 13%]
+tests/unit/test_clients.py::test_jira_client_create_custom_field PASSED  [ 16%]
+tests/unit/test_clients.py::test_jira_client_context_manager PASSED      [ 18%]
+tests/unit/test_clients.py::test_confluence_client_initialization PASSED [ 21%]
+tests/unit/test_clients.py::test_confluence_client_create_space PASSED   [ 24%]
+tests/unit/test_clients.py::test_confluence_client_create_page PASSED    [ 27%]
+tests/unit/test_clients.py::test_confluence_client_get_page_by_title PASSED [ 29%]
+tests/unit/test_clients.py::test_confluence_client_get_page_by_title_not_found PASSED [ 32%]
+tests/unit/test_engine.py::test_engine_initialization PASSED             [ 35%]
+tests/unit/test_engine.py::test_engine_dry_run_mode PASSED               [ 37%]
+tests/unit/test_engine.py::test_engine_jira_client_property PASSED       [ 40%]
+tests/unit/test_engine.py::test_engine_confluence_client_property PASSED [ 43%]
+tests/unit/test_engine.py::test_engine_client_property_missing_connection PASSED [ 45%]
+tests/unit/test_engine.py::test_execute_operation_dry_run PASSED         [ 48%]
+tests/unit/test_engine.py::test_execute_operation_unknown_resource_type PASSED [ 51%]
+tests/unit/test_engine.py::test_run_executes_all_operations PASSED       [ 54%]
+tests/unit/test_models.py::test_operation_type_enum PASSED               [ 56%]
+tests/unit/test_models.py::test_resource_type_enum PASSED                [ 59%]
+tests/unit/test_models.py::test_operation_to_dict PASSED                 [ 62%]
+tests/unit/test_models.py::test_report_initialization PASSED             [ 64%]
+tests/unit/test_models.py::test_report_add_result PASSED                 [ 67%]
+tests/unit/test_models.py::test_report_success_rate PASSED               [ 70%]
+tests/unit/test_models.py::test_connection_config PASSED                 [ 72%]
+tests/unit/test_parser.py::test_parse_jira_project PASSED                [ 75%]
+tests/unit/test_parser.py::test_parse_jira_issue_types PASSED            [ 78%]
+tests/unit/test_parser.py::test_parse_jira_workflows PASSED              [ 81%]
+tests/unit/test_parser.py::test_parse_jira_custom_fields PASSED          [ 83%]
+tests/unit/test_parser.py::test_parse_confluence_spaces PASSED           [ 86%]
+tests/unit/test_parser.py::test_parse_confluence_pages PASSED            [ 89%]
+tests/unit/test_parser.py::test_parse_confluence_templates PASSED        [ 91%]
+tests/unit/test_parser.py::test_parse_full_config PASSED                 [ 94%]
+tests/unit/test_parser.py::test_parser_empty_config PASSED               [ 97%]
+tests/unit/test_parser.py::test_parser_missing_project_key PASSED        [100%]
+
+============================== 37 passed in 0.18s ==============================
+[0m
+All unit tests pass! Now let me create a basic integration test. I'll create a file that demonstrates end-to-end functionality:
+[0m← [0mWrite tests/integration/test_integration.py
+Wrote file successfully.
+
+LSP errors detected in other files:
+<diagnostics file="/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/test_clients.py">
+ERROR [93:16] Object of type "None" is not subscriptable
+</diagnostics>
+
+LSP errors detected in other files:
+<diagnostics file="/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit/test_engine.py">
+ERROR [129:23] Argument of type "FakeResourceType" cannot be assigned to parameter "resource_type" of type "ResourceType" in function "__init__"
+  "FakeResourceType" is not assignable to "ResourceType"
+</diagnostics>
+[0m
+Now run the integration tests:
+[0m$ [0mpython -m pytest tests/integration/ -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- /home/julien/Desktop/Free-Wiggum-opencode/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent
+plugins: langsmith-0.7.16, anyio-4.12.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1, dash-4.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 3 items
+
+tests/integration/test_integration.py::test_full_jira_workflow FAILED    [ 33%]
+tests/integration/test_integration.py::test_confluence_page_lifecycle PASSED [ 66%]
+tests/integration/test_integration.py::test_dry_run_mode PASSED          [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_full_jira_workflow ____________________________
+
+mocker = <pytest_mock.plugin.MockerFixture object at 0x7f899abc2a50>
+
+    def test_full_jira_workflow(mocker):
+        """Test a complete Jira workflow: parse config, create engine, execute operations."""
+        # Mock configuration
+        config = {
+            "connections": {
+                "jira": {
+                    "url": "https://test.atlassian.net",
+                    "username": "user@example.com",
+                    "password": "token123",
+                }
+            },
+            "jira": {
+                "projects": [
+                    {
+                        "key": "TEST",
+                        "name": "Test Project",
+                        "description": "Created by integration test",
+                        "projectTypeKey": "business",
+                    }
+                ],
+                "issue_types": [
+                    {"name": "Bug", "description": "A bug report", "create": True}
+                ],
+                "custom_fields": [
+                    {
+                        "name": "Priority",
+                        "type": "select",
+                        "description": "Priority field",
+                        "contexts": [{"global": True, "projects": []}],
+                    }
+                ],
+                "workflows": [
+                    {
+                        "name": "Simple Workflow",
+                        "description": "A simple workflow",
+                        "steps": [
+                            {"name": "To Do", "status": "TO_DO"},
+                            {"name": "Done", "status": "DONE"},
+                        ],
+                    }
+                ],
+            },
+        }
+    
+        # Parse config into operations
+        parser = OperationParser()
+        operations = parser._parse_config(config)
+    
+        assert len(operations) == 4  # 1 project, 1 issue type, 1 custom field, 1 workflow
+    
+        # Create engine with mocked Jira client
+        connections = config["connections"]
+        engine = Engine(connections=connections, dry_run=False)
+    
+        # Mock the HTTP session for Jira
+        mock_response = Mock()
+        mock_response.json.return_value = {"id": "10001"}
+        mock_response.raise_for_status = Mock()
+    
+        with patch("httpx.Client") as mock_client_class:
+            mock_client = Mock()
+            mock_client.post.return_value = mock_response
+            mock_client.get.return_value = mock_response
+            mock_client.put.return_value = mock_response
+            mock_client.delete.return_value = mock_response
+            mock_client_class.return_value = mock_client
+    
+            # Execute operations
+            report = engine.run(operations)
+    
+            # Verify report
+            assert report.total == 4
+>           assert report.successful == 4
+E           assert 0 == 4
+E            +  where 0 = Report(total=4, successful=0, failed=4, operations=[{'operation': {'operation': 'create', 'resource': 'jira_project', 'id': 'TEST', 'params': {'key': 'TEST', 'name': 'Test Project', 'description': 'Created by integration test', 'projectTypeKey': 'business'}, 'description': 'Create Jira project TEST'}, 'success': False, 'error': "JiraClient.create_project() got an unexpected keyword argument 'projectTypeKey'. Did you mean 'project_type_key'?"}, {'operation': {'operation': 'create', 'resource': 'jira_issue_type', 'id': 'Bug', 'params': {'name': 'Bug', 'description': 'A bug report', 'create': True}, 'description': 'Manage issue type Bug'}, 'success': False, 'error': "JiraClient.create_issue_type() got an unexpected keyword argument 'create'"}, {'operation': {'operation': 'create', 'resource': 'jira_workflow', 'id': 'Simple Workflow', 'params': {'name': 'Simple Workflow', 'description': 'A simple workflow', 'steps': [{'name': 'To Do', 'status': 'TO_DO'}, {'name': 'Done', 'status': 'DONE'}]}, 'description': 'Create workflow Simple Workflow'}, 'success': False, 'error': "'<' not supported between instances of 'Mock' and 'int'"}, {'operation': {'operation': 'create', 'resource': 'jira_custom_field', 'id': 'Priority', 'params': {'name': 'Priority', 'type': 'select', 'description': 'Priority field', 'contexts': [{'global': True, 'projects': []}]}, 'description': 'Create custom field Priority'}, 'success': False, 'error': "JiraClient.create_custom_field() got an unexpected keyword argument 'type'"}]).successful
+
+tests/integration/test_integration.py:86: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    src.engine:engine.py:91 Operation failed: Create Jira project TEST
+Traceback (most recent call last):
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 86, in execute_operation
+    result = self._dispatch_operation(client, operation)
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 127, in _dispatch_operation
+    return client.create_project(**params)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+TypeError: JiraClient.create_project() got an unexpected keyword argument 'projectTypeKey'. Did you mean 'project_type_key'?
+ERROR    src.engine:engine.py:91 Operation failed: Manage issue type Bug
+Traceback (most recent call last):
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 86, in execute_operation
+    result = self._dispatch_operation(client, operation)
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 151, in _dispatch_operation
+    return client.create_issue_type(**params)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+TypeError: JiraClient.create_issue_type() got an unexpected keyword argument 'create'
+ERROR    src.engine:engine.py:91 Operation failed: Create workflow Simple Workflow
+Traceback (most recent call last):
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 86, in execute_operation
+    result = self._dispatch_operation(client, operation)
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 159, in _dispatch_operation
+    return client.create_workflow(**params)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py", line 180, in create_workflow
+    if status_response.status_code < 300:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'Mock' and 'int'
+ERROR    src.engine:engine.py:91 Operation failed: Create custom field Priority
+Traceback (most recent call last):
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 86, in execute_operation
+    result = self._dispatch_operation(client, operation)
+  File "/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py", line 139, in _dispatch_operation
+    return client.create_custom_field(**params)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+TypeError: JiraClient.create_custom_field() got an unexpected keyword argument 'type'
+=========================== short test summary info ============================
+FAILED tests/integration/test_integration.py::test_full_jira_workflow - asser...
+========================= 1 failed, 2 passed in 0.14s ==========================
+[0m
+[0m# [0mTodos
+[x] Add DELETE operations to Jira and Confluence clients (delete_project, delete_issue_type, delete_custom_field, delete_workflow, delete_space, delete_page, delete_template)
+[x] Update engine._dispatch_operation to handle DELETE operations
+[x] Fix test failures: context manager and unknown resource type
+[ ] Fix parser parameter mapping to match client signatures
+[x] Create integration tests for end-to-end workflows
+[x] Run all unit tests and verify all pass
+[ ] Add Jira screens CRUD operations to jira_client and engine
+[ ] Add Jira permissions operations (grant/revoke) to jira_client and engine
+[ ] Add Confluence permissions operations to confluence_client and engine
+[ ] Update README.md with current project status and usage examples
+[ ] Update TASKS.md marking Phase 2 complete
+[0m
+The integration test exposed parameter mismatches between config and client methods. I need to fix the parser to map config keys to client method parameters correctly and strip out parser-specific fields. Let me update parser.py:
+Now modify parser.py to fix parameter mapping:
+[0m← [0mEdit src/parser.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
+@@ -49,48 +49,67 @@
+ ops = []
+ 
+ # Projects
+ for project in config.get("projects", []):
++    # Map configuration keys to client parameter names
++    params = self._clean_and_map_params(
++        project,
++        key_mappings={"projectTypeKey": "project_type_key"},
++        remove_keys=["create"],
++    )
+     op = Operation(
+         op_type=OperationType.CREATE,
+         resource_type=ResourceType.JIRA_PROJECT,
+         resource_id=project.get("key", ""),
+-        params=project,
++        params=params,
+         description=f"Create Jira project {project.get('key')}",
+     )
+     ops.append(op)
+ 
+ # Issue Types
+ for issue_type in config.get("issue_types", []):
++    params = self._clean_and_map_params(
++        issue_type,
++        remove_keys=["create"],
++    )
+     op = Operation(
+         op_type=OperationType.CREATE
+         if issue_type.get("create", True)
+         else OperationType.UPDATE,
+         resource_type=ResourceType.JIRA_ISSUE_TYPE,
+         resource_id=issue_type.get("name", ""),
+-        params=issue_type,
++        params=params,
+         description=f"Manage issue type {issue_type.get('name')}",
+     )
+     ops.append(op)
+ 
+ # Workflows
+ for workflow in config.get("workflows", []):
++    params = self._clean_and_map_params(
++        workflow,
++        remove_keys=["create"],
++    )
+     op = Operation(
+         op_type=OperationType.CREATE,
+         resource_type=ResourceType.JIRA_WORKFLOW,
+         resource_id=workflow.get("name", ""),
+-        params=workflow,
++        params=params,
+         description=f"Create workflow {workflow.get('name')}",
+     )
+     ops.append(op)
+ 
+ # Custom Fields
+ for field in config.get("custom_fields", []):
++    params = self._clean_and_map_params(
++        field,
++        key_mappings={"type": "field_type"},
++        remove_keys=["create"],
++    )
+     op = Operation(
+         op_type=OperationType.CREATE,
+         resource_type=ResourceType.JIRA_CUSTOM_FIELD,
+         resource_id=field.get("name", ""),
+-        params=field,
++        params=params,
+         description=f"Create custom field {field.get('name')}",
+     )
+     ops.append(op)
+ 
+
+[0m
+I need to add the `_clean_and_map_params` helper method to the OperationParser class. Let me add it:
+[0m← [0mEdit src/parser.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
+@@ -11,8 +11,37 @@
+ 
+ def __init__(self):
+     self.operations: List[Operation] = []
+ 
++def _clean_and_map_params(
++    self,
++    params: Dict[str, Any],
++    key_mappings: Optional[Dict[str, str]] = None,
++    remove_keys: Optional[List[str]] = None,
++) -> Dict[str, Any]:
++    """
++    Clean and map configuration parameters to match client method signatures.
++
++    Args:
++        params: Original parameters dict from config
++        key_mappings: Mapping of config keys to client keys (e.g., {'projectTypeKey': 'project_type_key'})
++        remove_keys: List of keys to remove (e.g., ['create'])
++
++    Returns:
++        Cleaned and mapped parameter dict
++    """
++    cleaned = params.copy()
++    # Remove specified keys
++    if remove_keys:
++        for key in remove_keys:
++            cleaned.pop(key, None)
++    # Rename keys according to mappings
++    if key_mappings:
++        for old_key, new_key in key_mappings.items():
++            if old_key in cleaned:
++                cleaned[new_key] = cleaned.pop(old_key)
++    return cleaned
++
+ def parse_file(self, config_path: str) -> List[Operation]:
+     """Parse a configuration file into a list of operations."""
+     path = Path(config_path)
+     if not path.exists():
+
+[0m
+I need to import Optional. Let me update the imports:
+[0m← [0mEdit src/parser.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/parser.py
+@@ -1,9 +1,9 @@
+ """Parse configuration files into executable operations."""
+ 
+ import yaml
+ from pathlib import Path
+-from typing import List, Dict, Any
++from typing import List, Dict, Any, Optional
+ from .models import Operation, OperationType, ResourceType
+ 
+ 
+ class OperationParser:
+
+[0m
+Now update the integration test to set status_code:
+[0m← [0mEdit tests/integration/test_integration.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/test_integration.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/test_integration.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/test_integration.py
+@@ -68,8 +68,9 @@
+ # Mock the HTTP session for Jira
+ mock_response = Mock()
+ mock_response.json.return_value = {"id": "10001"}
+ mock_response.raise_for_status = Mock()
++mock_response.status_code = 200
+ 
+ with patch("httpx.Client") as mock_client_class:
+     mock_client = Mock()
+     mock_client.post.return_value = mock_response
+
+[0m
+Also update the other two test functions similarly:
+[0m← [0mEdit tests/integration/test_integration.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/test_integration.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/test_integration.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/integration/test_integration.py
+@@ -130,8 +130,9 @@
+ 
+ mock_response = Mock()
+ mock_response.json.return_value = {"id": "10001", "title": "Home"}
+ mock_response.raise_for_status = Mock()
++mock_response.status_code = 200
+ 
+ with patch("httpx.Client") as mock_client_class:
+     mock_client = Mock()
+     mock_client.post.return_value = mock_response
+
+[0m
+[0m✗ [0medit failed
+[91m[1mError: [0mFound multiple matches for oldString. Provide more surrounding context to make the match unique.
+📝 Log saved: logs/iteration-5.md
+📊 Token Usage: 14250 / Session: 30000 / 64000

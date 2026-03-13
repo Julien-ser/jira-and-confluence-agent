@@ -69,6 +69,14 @@ class JiraClient:
         logger.info(f"Updated project {key}")
         return response.json()
 
+    def delete_project(self, key: str) -> Dict[str, Any]:
+        """Delete a project."""
+        url = f"{self.base_url}/rest/api/3/project/{key}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted project {key}")
+        return response.json()
+
     def create_custom_field(
         self,
         name: str,
@@ -98,6 +106,14 @@ class JiraClient:
         response.raise_for_status()
         return response.json()
 
+    def delete_custom_field(self, field_id: str) -> Dict[str, Any]:
+        """Delete a custom field."""
+        url = f"{self.base_url}/rest/api/3/field/{field_id}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted custom field {field_id}")
+        return response.json()
+
     def create_issue_type(
         self,
         name: str,
@@ -118,6 +134,14 @@ class JiraClient:
         response = self._get_session().post(url, json=data)
         response.raise_for_status()
         logger.info(f"Created issue type {name}")
+        return response.json()
+
+    def delete_issue_type(self, issue_type_id: str) -> Dict[str, Any]:
+        """Delete an issue type."""
+        url = f"{self.base_url}/rest/api/3/issuetype/{issue_type_id}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted issue type {issue_type_id}")
         return response.json()
 
     def create_workflow(
@@ -173,12 +197,21 @@ class JiraClient:
 
         return workflow
 
+    def delete_workflow(self, workflow_id: str) -> Dict[str, Any]:
+        """Delete a workflow."""
+        url = f"{self.base_url}/rest/api/3/workflow/{workflow_id}"
+        response = self._get_session().delete(url)
+        response.raise_for_status()
+        logger.info(f"Deleted workflow {workflow_id}")
+        return response.json()
+
     def close(self):
         """Close the client session."""
         if self.session:
             self.session.close()
 
     def __enter__(self):
+        self._get_session()  # Create session on enter
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
