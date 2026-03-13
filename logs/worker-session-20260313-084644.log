@@ -549,3 +549,147 @@ To https://github.com/Julien-ser/jira-and-confluence-agent.git
 [0m
 📝 Log saved: logs/iteration-2.md
 📊 Token Usage: 6250 / Session: 8000 / 64000
+✅ Changes committed
+To https://github.com/Julien-ser/jira-and-confluence-agent.git
+   4ebe760..c799257  main -> main
+✅ Pushed to GitHub
+📊 Updated Tasks: 3/12 completed, 9 remaining
+   Next task: Implement main features...
+📍 Iteration 3 at Fri Mar 13 08:52:31 AM EDT 2026...
+🤖 OpenCode processing: Implement main features
+[0m
+> build · stepfun/step-3.5-flash:free
+[0m
+[0m→ [0mRead .
+[0m✱ [0mGlob "**/*"[90m 92 matches[0m
+I'll read the project structure and TASKS.md to understand what needs to be done.
+[0m→ [0mRead TASKS.md
+[0m→ [0mRead README.md
+[0m→ [0mRead ARCHITECTURE.md
+[0m→ [0mRead requirements.txt
+[0m→ [0mRead src/models.py
+[0m→ [0mRead src/parser.py
+[0m→ [0mRead src/jira_client.py
+[0m→ [0mRead src/reporter.py
+[0m→ [0mRead src/utils.py
+[0m→ [0mRead config/example_config.yaml
+[0m✱ [0mGlob "tests/**/*"[90m 0 matches[0m
+Let me check the example config file that exists:
+[0m
+[0m# [0mTodos
+[ ] Create ConfluenceClient with space, page, and template operations
+[ ] Create Engine orchestrator to execute operations
+[ ] Write unit tests for core components
+[ ] Update TASKS.md to mark Phase 2 complete
+[ ] Update README.md with current progress
+[0m
+Now I'll create the ConfluenceClient:
+[0m← [0mWrite src/confluence_client.py
+Wrote file successfully.
+
+LSP errors detected in other files:
+<diagnostics file="/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py">
+ERROR [87:13] Argument of type "list[Unknown]" cannot be assigned to parameter "value" of type "str" in function "__setitem__"
+  "list[Unknown]" is not assignable to "str"
+</diagnostics>
+[0m
+Now I'll create the Engine orchestrator that ties everything together:
+[0m← [0mWrite src/engine.py
+Wrote file successfully.
+
+LSP errors detected in other files:
+<diagnostics file="/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py">
+ERROR [87:13] Argument of type "list[Unknown]" cannot be assigned to parameter "value" of type "str" in function "__setitem__"
+  "list[Unknown]" is not assignable to "str"
+</diagnostics>
+[0m
+[0m# [0mTodos
+[x] Create ConfluenceClient with space, page, and template operations
+[x] Create Engine orchestrator to execute operations
+[ ] Write unit tests for core components
+[ ] Update TASKS.md to mark Phase 2 complete
+[ ] Update README.md with current progress
+[0m
+[0m$ [0mmkdir -p /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/tests/unit
+Now I'll create test files for the core components:
+[0m
+[0m← [0mWrite tests/unit/test_models.py
+Wrote file successfully.
+
+LSP errors detected in other files:
+<diagnostics file="/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/jira_client.py">
+ERROR [87:13] Argument of type "list[Unknown]" cannot be assigned to parameter "value" of type "str" in function "__setitem__"
+  "list[Unknown]" is not assignable to "str"
+</diagnostics>
+
+LSP errors detected in other files:
+<diagnostics file="/home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py">
+ERROR [44:41] Cannot access attribute "get" for class "ConnectionConfig"
+  Attribute "get" is unknown
+ERROR [52:16] Type "JiraClient | None" is not assignable to return type "JiraClient"
+  Type "JiraClient | None" is not assignable to type "JiraClient"
+    "None" is not assignable to "JiraClient"
+ERROR [58:47] Cannot access attribute "get" for class "ConnectionConfig"
+  Attribute "get" is unknown
+</diagnostics>
+[0m
+[0m→ [0mRead src/engine.py
+Let me read engine.py and fix the LSP errors:
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -7,9 +7,8 @@
+ from .models import (
+     Operation,
+     OperationType,
+     ResourceType,
+-    ConnectionConfig,
+     Report,
+ )
+ from .jira_client import JiraClient
+ from .confluence_client import ConfluenceClient
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -22,9 +22,9 @@
+ """Orchestrates execution of administrative operations."""
+ 
+ def __init__(
+     self,
+-    connections: ConnectionConfig,
++    connections: Dict[str, Any],
+     dry_run: bool = False,
+     log_dir: str = "logs",
+ ):
+     self.connections = connections
+
+[0m
+[0m← [0mEdit src/engine.py
+Index: /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+===================================================================
+--- /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
++++ /home/julien/Desktop/Free-Wiggum-opencode/projects/jira-and-confluence-agent/src/engine.py
+@@ -36,9 +36,9 @@
+     self._jira_client: Optional[JiraClient] = None
+     self._confluence_client: Optional[ConfluenceClient] = None
+ 
+ @property
+-def jira_client(self) -> JiraClient:
++def jira_client(self) -> Optional[JiraClient]:
+     """Get or create Jira client."""
+     if self._jira_client is None:
+         jira_cfg = self.connections.get("jira")
+         if jira_cfg:
+
+[0m
+[0m✗ [0medit failed
+[91m[1mError: [0mNo changes to apply: oldString and newString are identical.
+Now let me quickly fix the jira_client.py LSP error on line 87. I'll change the contexts parameter type to be more specific:
+📝 Log saved: logs/iteration-3.md
